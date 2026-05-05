@@ -56,6 +56,13 @@ REST API for restaurant table reservation management, built with Java 21, Spring
 ```
    http://localhost:8080/swagger-ui/index.html
 ```
+### Run with Docker Compose
+
+```bash
+docker compose up --build
+```
+
+The API will be available at `http://localhost:8080/swagger-ui/index.html`
 
 ## API Endpoints
 
