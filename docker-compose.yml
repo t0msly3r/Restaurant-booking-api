@@ -1,0 +1,26 @@
+services:
+  mongodb:
+    image: mongo:7
+    container_name: restaurante-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: restaurante
+
+  app:
+    build: .
+    container_name: restaurante-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/restaurante
+      JWT_SECRET: tu-clave-secreta-de-al-menos-32-caracteres-para-produccion
+      JWT_EXPIRATION: 86400000
+      SPRING_JACKSON_SERIALIZATION_WRITE-DATES-AS-TIMESTAMPS: false
+    depends_on:
+      - mongodb
+
+volumes:
+  mongodb_data:
