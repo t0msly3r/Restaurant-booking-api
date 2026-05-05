@@ -35,15 +35,22 @@ public class   ReservationService {
             );
         }
 
+        if (!table.getAvailable()) {
+            throw new RestaurantException(
+                    "The table " + table.getNumber() + " is not available",
+                    HttpStatus.CONFLICT
+            );
+        }
+
         // Check overlapping
         LocalDateTime start = dto.getDateTime().minusHours(2);
         LocalDateTime end = dto.getDateTime().plusHours(2);
-
         List<Reservation> overlap = reservationRepository
                 .findByTableIdAndDateTimeBetween(dto.getTableId(), start, end)
                 .stream()
                 .filter(r -> !r.getState().equals("CANCEL"))
                 .toList();
+
         if (!overlap.isEmpty()) {
             throw new ReservationOverlapException();
         }
